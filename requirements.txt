@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+gunicorn
+httpx
+pydantic
+python-json-logger
+prometheus-client
+pytest
+tenacity
+openai
+# langgraph placeholder - replace with actual package or local module

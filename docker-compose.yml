@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/dockerfiles/Dockerfile.dev
+    volumes:
+      - ./src:/app/src
+      - ./.env:/app/.env:ro
+    environment:
+      - OPENAI_API_KEY
+    ports:
+      - "8000:8000"

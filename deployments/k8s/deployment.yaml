@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: travelsmart-ai-service
+  labels:
+    app: travelsmart-ai-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: travelsmart-ai-service
+  template:
+    metadata:
+      labels:
+        app: travelsmart-ai-service
+    spec:
+      containers:
+        - name: travelsmart
+          image: <REGISTRY>/travelsmart-ai-service:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: travelsmart-secrets
+            - configMapRef:
+                name: travelsmart-config
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
